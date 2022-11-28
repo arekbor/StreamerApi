@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Copyright>a_r_e_k97</Copyright>
+    <PackageReleaseNotes>2.0</PackageReleaseNotes>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreRateLimit.Redis" Version="1.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.32" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.32" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.9.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.0" />
+    <PackageReference Include="SteamWebAPI2" Version="4.3.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="VideoLibrary" Version="3.2.2" />
+  </ItemGroup>
+
+</Project>

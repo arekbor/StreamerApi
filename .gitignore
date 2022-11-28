@@ -1,9 +1,4 @@
 ﻿appsettings.json
-/Properties/*
-/Migrations/*
 obj/*
 bin/*
 appsettings.Development.json
-StreamerApi.csproj
-StreamerApi.csproj.user
-Data/AllowedAddresses.cs
