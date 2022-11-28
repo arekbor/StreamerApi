@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using ExcelDataReader;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using SteamWebAPI2.Utilities;
@@ -25,7 +26,6 @@ namespace StreamerApi.Services
         }
         public async Task <IEnumerable<SteamStatsDto>> PaginateStats(int page, int limit)
         {
-
             if (!int.TryParse(_configuration["PaginationLimit"], out var maxLimit)) {
                 throw new Exception(nameof(int.TryParse));
             }
@@ -34,7 +34,7 @@ namespace StreamerApi.Services
                 page = 1;
             }
             if (limit <= 0 || limit > maxLimit) {
-                limit = 1;
+                limit = maxLimit;
             }
 
             var skip = (page - 1)* limit;

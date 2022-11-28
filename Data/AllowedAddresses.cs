@@ -2,6 +2,6 @@
 {
     public static class AllowedAddresses
     {
-        public static string[] allowedIp = {"193.70.126.91", "45.85.185.33", "::1" };
+        public static string[] allowedIp = {"193.70.126.91", "45.85.185.33", "89.73.164.252", "::1" };
     }
 }
