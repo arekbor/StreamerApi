@@ -1,7 +1,5 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StreamerApi.AdditionalServices;
 using StreamerApi.Services;
 
 namespace StreamerApi.Controllers
@@ -12,7 +10,7 @@ namespace StreamerApi.Controllers
     {
         private readonly IStreamerService _streamerService;
         private readonly ILogService _logService;
-        public StreamerController(IStreamerService streamerService,IConfiguration configuration,ILogService logService)
+        public StreamerController(IStreamerService streamerService,ILogService logService)
         {
             _streamerService = streamerService;
             _logService = logService;
