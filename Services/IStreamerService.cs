@@ -1,5 +1,4 @@
-﻿using StreamerApi.Entities;
-using StreamerApi.Models;
+﻿using StreamerApi.Models;
 
 namespace StreamerApi.Services
 {

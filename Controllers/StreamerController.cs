@@ -16,7 +16,6 @@ namespace StreamerApi.Controllers
             _logService = logService;
         }
         [HttpGet]
-        [Authorize(Policy = "IpVerify")]
         public IActionResult Create(string token, int rank,string steam,string url)
         {
             _streamerService.Create(token,rank,steam,url);
@@ -33,7 +32,6 @@ namespace StreamerApi.Controllers
             return File(streamer, "audio/mp3");
         }
         [HttpGet("removedata")]
-        [Authorize(Policy = "IpVerify")]
         public IActionResult RemoveData()
         {
             var count = _streamerService.RemoveFiles();
@@ -41,7 +39,6 @@ namespace StreamerApi.Controllers
             return Ok($"Removed {count} files");
         }
         [HttpGet("rankdata")]
-        [Authorize(Policy = "IpVerify")]
         public IActionResult GetRanks()
         {
             var data = _streamerService.GetRankData();
@@ -49,7 +46,6 @@ namespace StreamerApi.Controllers
             return Ok(data);
         }
         [HttpGet("blacklist")]
-        [Authorize(Policy = "IpVerify")]
         public async Task<IActionResult> GetBlacklistData()
         {
             var result = await _streamerService.GetBlacklist();

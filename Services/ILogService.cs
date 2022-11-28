@@ -1,5 +1,4 @@
-﻿
-namespace StreamerApi.Services
+﻿namespace StreamerApi.Services
 {
     public interface ILogService
     {
