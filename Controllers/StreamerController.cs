@@ -62,12 +62,5 @@ namespace StreamerApi.Controllers
             var result = await _streamerService.PaginateStats(page, limit);
             return Ok(result);
         }
-        [HttpGet("parser")]
-        public async Task<IActionResult> Data(string steamid, string ytName, DateTime dateTime, string ytUrl) {
-
-            BackgroundJob.Enqueue(() => HangfireStreamer.CreateSteamStatsJob
-                        (steamid, ytUrl, ytName,dateTime));
-            return Ok();
-        }
     }
 }
