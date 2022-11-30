@@ -51,5 +51,10 @@ namespace StreamerApi.Controllers
             var result = await _streamerService.GetBlacklist();
             return Ok(result);
         }
+        [HttpGet("stats")]
+        public async Task<IActionResult> GetStats(int page, int limit) {
+            var result = await _streamerService.PaginateStats(page, limit);
+            return Ok(result);
+        }
     }
 }
