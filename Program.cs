@@ -16,10 +16,6 @@ ConfigurationHelper.Initialize(builder.Configuration);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-builder.Services.AddAuthorization(options => {
-    options.AddPolicy("IpVerify", builder => builder.AddRequirements(new IPVerifyRequirement()));
-});
-
 builder.Services.AddHangfire(options =>
     options.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
@@ -68,17 +64,10 @@ builder.Services.AddCors(options => {
 var app = builder.Build();
 
 app.UseIpRateLimiting();
-
 app.UseHangfireDashboard();
-
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseMiddleware<ExceptionsMiddleware>();
-
-app.UseAuthorization();
-
 app.MapControllers();
 
 
