@@ -22,29 +22,26 @@ namespace StreamerApi.Services
             _configuration = configuration;
             _mapper = mapper;
         }
-        public async Task <IEnumerable<SteamStatsDto>> PaginateStats(int page, int limit)
+        public async Task <Pager<List<SteamStatsDto>>> PaginateStats(PaginationFilter filter)
         {
-            if (!int.TryParse(_configuration["PaginationLimit"], out var maxLimit)) {
-                throw new Exception(nameof(int.TryParse));
-            }
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            if (page <= 0) {
-                page = 1;
-            }
-            if (limit <= 0 || limit > maxLimit) {
-                limit = maxLimit;
-            }
-
-            var skip = (page - 1)* limit;
-
-            var result = await _streamerDbContext
+            var data = await _streamerDbContext
                 .steamStats
-                .Skip(skip)
-                .Take(limit)
+                .OrderByDescending(x => x.DateTime)
+                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+                .Take(validFilter.PageSize)
                 .ToListAsync();
-           
-            var mappedResult = _mapper.Map<List<SteamStatsDto>>(result).AsEnumerable();
-            return mappedResult;
+
+
+            var totalRecords = await _streamerDbContext.steamStats.CountAsync();
+
+            var mapped = _mapper.Map<List<SteamStatsDto>>(data);
+
+            var pagedReponse = PaginationHelper.CreatePagedReponse<SteamStatsDto>
+                (mapped, validFilter, totalRecords);
+
+            return pagedReponse;
         }
 
         public void Create(string token, int rank, string steam, string url)

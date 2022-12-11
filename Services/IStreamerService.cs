@@ -1,4 +1,5 @@
-﻿using StreamerApi.Models;
+﻿using StreamerApi.Entities;
+using StreamerApi.Models;
 
 namespace StreamerApi.Services
 {
@@ -9,6 +10,6 @@ namespace StreamerApi.Services
         public int RemoveFiles();
         public List<RankDto> GetRankData();
         Task<IEnumerable<BlacklistDto>> GetBlacklist();
-        Task <IEnumerable<SteamStatsDto>> PaginateStats(int page, int limit);
+        Task<Pager<List<SteamStatsDto>>>  PaginateStats(PaginationFilter filter);
     }
 }

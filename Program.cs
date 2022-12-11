@@ -54,7 +54,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddCors(options => {
     options.AddPolicy(name: "AllowOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost")
+        policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
             .WithMethods("GET", "POST")
             .AllowCredentials();

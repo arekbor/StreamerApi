@@ -1,4 +1,6 @@
-﻿namespace StreamerApi.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace StreamerApi.Entities
 {
     public class SteamStats
     {

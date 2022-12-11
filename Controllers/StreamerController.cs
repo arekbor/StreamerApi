@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StreamerApi.Models;
 using StreamerApi.Services;
 
 namespace StreamerApi.Controllers
@@ -16,7 +17,7 @@ namespace StreamerApi.Controllers
             _logService = logService;
         }
         [HttpGet]
-        public IActionResult Create(string token, int rank,string steam,string url)
+        public IActionResult Create(string token = "", int rank =12,string steam = "",string url = "")
         {
             _streamerService.Create(token,rank,steam,url);
             _logService.Log($"created file: {token}, {rank},{steam},{url}", LogLevel.Information);
@@ -52,9 +53,9 @@ namespace StreamerApi.Controllers
             return Ok(result);
         }
         [HttpGet("stats")]
-        public async Task<IActionResult> GetStats(int page, int limit) {
-            var result = await _streamerService.PaginateStats(page, limit);
-            return Ok(result);
+        public async Task<IActionResult> GetStats([FromQuery] PaginationFilter filter) {
+           var response = await _streamerService.PaginateStats(filter);
+           return Ok(response);
         }
     }
 }

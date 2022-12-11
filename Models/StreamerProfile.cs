@@ -10,7 +10,9 @@ public class StreamerProfile:Profile
         CreateMap<Rank, RankDto>();
 
         CreateMap<RateLimitDto, RateLimit>();
-        CreateMap<SteamStats, SteamStatsDto>().ReverseMap();
+
+        CreateMap<SteamStats, SteamStatsDto>()
+            .ReverseMap();
     }
 }
 
