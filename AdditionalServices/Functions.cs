@@ -101,8 +101,9 @@ namespace StreamerApi.AdditionalServices
                 File.WriteAllBytesAsync(_configuration["SaveFilesPath"] + token + ".mp4", video.GetBytesAsync().GetAwaiter().GetResult());
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logService.Log(e.Message, LogLevel.Critical);
                 return false;
             }
         }
