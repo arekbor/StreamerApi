@@ -15,11 +15,13 @@ namespace StreamerApi.Services
         private readonly IFunctions _functions;
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
-        public StreamerService(StreamerDbContext streamerDbContext, IMapper mapper, IFunctions functions, IConfiguration configuration)
+        private readonly ILogService _logService;
+        public StreamerService(StreamerDbContext streamerDbContext, IMapper mapper, IFunctions functions, IConfiguration configuration, ILogService logService)
         {
             _streamerDbContext = streamerDbContext;
             _functions = functions;
             _configuration = configuration;
+            _logService = logService;
             _mapper = mapper;
         }
         public async Task <Pager<List<SteamStatsDto>>> PaginateStats(PaginationFilter filter)
@@ -100,6 +102,8 @@ namespace StreamerApi.Services
                         };
                         _streamerDbContext.Add(streamer);
                         _streamerDbContext.SaveChanges();
+                        
+                        _logService.Log("Video downloaded successfully in Create function in StreamerService", LogLevel.Information);
                         BackgroundJob.Enqueue(() => HangfireStreamer.CreateSteamStatsJob
                         (steam, url, video.Title, dateTime));
                     }
@@ -118,11 +122,11 @@ namespace StreamerApi.Services
                 throw new ClientException("Błąd podczas parsowania steamid");
             }
         }
-        public FileStream Get(string token)
+        public async Task<FileStream> Get(string token)
         {
-            var streamer = _streamerDbContext
+            var streamer = await _streamerDbContext
                 .streamerDbContext
-                .FirstOrDefault(x => x.Token == token);
+                .FirstOrDefaultAsync(x => x.Token == token);
 
             if (streamer == null)
                 throw new ClientException("Nie znaleziono pliku");
@@ -159,6 +163,7 @@ namespace StreamerApi.Services
             }
             _streamerDbContext.RemoveRange(data);
             _streamerDbContext.SaveChanges();
+            
             return count;
         }
         public async Task<IEnumerable<BlacklistDto>> GetBlacklist()

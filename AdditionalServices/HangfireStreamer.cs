@@ -6,16 +6,22 @@ namespace StreamerApi.AdditionalServices
 {
     public static class HangfireStreamer
     {
-        public static void CreateSteamStatsJob(string steam, string ytUrl, string vidTitle, DateTime dateTime) {
+        public static void CreateSteamStatsJob(string steam, string ytUrl, string vidTitle, DateTime dateTime)
+        {
             if (String.IsNullOrEmpty(steam)) {
                 throw new ArgumentNullException(nameof(CreateSteamStatsJob));
             }
             var configuration = ConfigurationHelper.config;
+            
+            var logger = new LogService(configuration);
             var webInterfaceFactory = new SteamWebInterfaceFactory(configuration["SteamApi"]);
             var steamInterface = webInterfaceFactory.CreateSteamWebInterface<SteamWebAPI2.Interfaces.SteamUser>(new HttpClient());
+            
+            logger.Log($"{steamInterface} was created successfully", LogLevel.Information);
 
             if (!ulong.TryParse(steam, out ulong steamulong)) {
-                throw new Exception(nameof(ulong.TryParse));
+                logger.Log($"Cannot parse ulong {nameof(steamulong)}", LogLevel.Critical);
+                return;
             }
 
             var playerSummaryResponse = steamInterface.GetPlayerSummaryAsync(steamulong)
@@ -23,7 +29,6 @@ namespace StreamerApi.AdditionalServices
                 .GetResult();
 
             var playerSummaryData = playerSummaryResponse.Data;
-
             
             using (var context = new StreamerDbContext(configuration)) {
 

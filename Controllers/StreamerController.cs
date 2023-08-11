@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StreamerApi.Models;
 using StreamerApi.Services;
 
@@ -24,9 +23,9 @@ namespace StreamerApi.Controllers
             return NoContent();
         }
         [HttpGet("{token}")]
-        public IActionResult Get(string token)
+        public async Task<IActionResult> Get(string token)
         {
-            var streamer = _streamerService.Get(token);
+            var streamer = await _streamerService.Get(token);
             _logService.Log($"returned file {streamer.Name}", LogLevel.Information);
             Response.Headers.Remove("Cache-Control");
             Response.Headers.Add("Accept-Ranges", "bytes");

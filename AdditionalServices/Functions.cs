@@ -2,6 +2,7 @@
 using StreamerApi.Entities;
 using StreamerApi.Exceptions;
 using System.Text.RegularExpressions;
+using StreamerApi.Services;
 using VideoLibrary;
 
 namespace StreamerApi.AdditionalServices
@@ -10,10 +11,12 @@ namespace StreamerApi.AdditionalServices
     {
         private readonly StreamerDbContext _streamerDbContext;
         private readonly IConfiguration _configuration;
-        public Functions(StreamerDbContext streamerDbContext, IConfiguration configuration)
+        private readonly ILogService _logService;
+        public Functions(StreamerDbContext streamerDbContext, IConfiguration configuration, ILogService logService)
         {
             _streamerDbContext = streamerDbContext;
             _configuration = configuration;
+            _logService = logService;
         }
         public bool IsYoutube(string url)
         {
@@ -64,6 +67,7 @@ namespace StreamerApi.AdditionalServices
                     throw new ClientException("Nie można przekonwertować transmisji na żywo");
                 if (e.Message.Contains("Player json has no found"))
                     throw new ClientException("Nie znaleziono odtwarzacza");
+                _logService.Log(e.Message, LogLevel.Warning);
                 return null;
             }
         }
