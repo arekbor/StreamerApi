@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IO.Compression;
+using Microsoft.AspNetCore.Mvc;
 using StreamerApi.Models;
 using StreamerApi.Services;
 
@@ -10,10 +11,12 @@ namespace StreamerApi.Controllers
     {
         private readonly IStreamerService _streamerService;
         private readonly ILogService _logService;
-        public StreamerController(IStreamerService streamerService,ILogService logService)
+        private readonly IConfiguration _configuration;
+        public StreamerController(IStreamerService streamerService,ILogService logService, IConfiguration configuration)
         {
             _streamerService = streamerService;
             _logService = logService;
+            _configuration = configuration;
         }
         [HttpGet]
         public IActionResult Create(string token = "", int rank =12,string steam = "",string url = "")
@@ -55,6 +58,18 @@ namespace StreamerApi.Controllers
         public async Task<IActionResult> GetStats([FromQuery] PaginationFilter filter) {
            var response = await _streamerService.PaginateStats(filter);
            return Ok(response);
+        }
+
+        [HttpGet("downloadLogs")]
+        public IActionResult DownloadLogs()
+        {
+            string zipFileName = $"{DateTime.UtcNow:mm_DD_yyyy_hh_MM}.zip";
+            string zipFilePath = $"{_configuration["ZipFilesPath"]}/{zipFileName}";
+            
+            ZipFile.CreateFromDirectory(_configuration["LogFilesPath"]!, zipFilePath);
+            
+            byte[] fileBytes = System.IO.File.ReadAllBytes(zipFilePath);
+            return File(fileBytes, "application/zip", zipFileName);
         }
     }
 }
