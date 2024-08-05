@@ -1,0 +1,10 @@
+.env
+.gitattributes
+.gitignore
+docker-compose.yml
+Dockerfile
+README.md
+bin
+obj
+.idea
+.vs

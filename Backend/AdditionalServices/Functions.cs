@@ -96,9 +96,16 @@ namespace StreamerApi.AdditionalServices
         }
         public bool DownloadVideo(string token, YouTubeVideo video)
         {
+            _logService.Log($"{video.FullName} starting conveting to bytes.", LogLevel.Information);
+
             try
             {
-                File.WriteAllBytesAsync(_configuration["SaveFilesPath"] + token + ".mp4", video.GetBytesAsync().GetAwaiter().GetResult());
+                _logService.Log("video converting to bytes...", LogLevel.Information);
+                var bites = video.GetBytes();
+
+                _logService.Log($"{bites.Length} lenght of bytes video ${video.FullName}.", LogLevel.Information);
+
+                File.WriteAllBytesAsync(_configuration["SaveFilesPath"] + token + ".mp4", bites);
                 return true;
             }
             catch (Exception e)

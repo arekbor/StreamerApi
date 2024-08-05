@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  streamer_api_server:
+    container_name: streamer_api_server
+    restart: always
+    ports:
+      - ${API_PORT}:80
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - SteamApi=${STEAM_API}
+      - MaxTimeRequest=80
+      - AllowedHosts=*
+      - MaxCountOfPagination=4
+      - ConnectionStrings__Default=Host=streamer_api_postgres;Port=5432;Username=${POSTGRES_USER};Password=${POSTGRES_PWD};Database=${POSTGRES_DB}
+    networks:
+      - streamer_api_network
+    depends_on:
+      - streamer_api_postgres
+    env_file:
+      - .env
+
+  streamer_api_postgres:
+    container_name: streamer_api_postgres
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+    networks:
+      - streamer_api_network
+    env_file:
+      - .env
+
+networks:
+  streamer_api_network:
+    driver: bridge

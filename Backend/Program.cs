@@ -20,7 +20,7 @@ builder.Services.AddHangfire(options =>
     options.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UsePostgreSqlStorage(builder.Configuration["ConnectionStrings:Hangfire"])
+    .UsePostgreSqlStorage(builder.Configuration["ConnectionStrings:Default"])
 );
 
 builder.Services.AddHangfireServer();
@@ -62,6 +62,8 @@ builder.Services.AddCors(options => {
 });
 
 var app = builder.Build();
+
+app.ApplyMigrations();
 
 app.UseIpRateLimiting();
 app.UseHangfireDashboard();
