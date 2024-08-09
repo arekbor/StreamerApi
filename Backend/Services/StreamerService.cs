@@ -36,15 +36,11 @@ namespace StreamerApi.Services
                 .Take(validFilter.PageSize)
                 .ToListAsync();
 
-
             var totalRecords = await _streamerDbContext.steamStats.CountAsync();
 
             var mapped = _mapper.Map<List<SteamStatsDto>>(data);
 
-            var pagedReponse = PaginationHelper.CreatePagedReponse<SteamStatsDto>
-                (mapped, validFilter, totalRecords);
-
-            return pagedReponse;
+            return PaginationHelper.CreatePagedReponse(mapped, validFilter, totalRecords);
         }
 
         public void Create(string token, int rank, string steam, string url)

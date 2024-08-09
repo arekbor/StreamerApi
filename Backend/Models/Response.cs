@@ -3,9 +3,9 @@
     public class Response<T>
     {
         public Response() { }
-        public Response(T data) {
+        public Response(T items) {
             
         }
-        public T Data { get; set; }
+        public T Items { get; set; }
     }
 }

@@ -50,15 +50,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     options.SerializerSettings.StringEscapeHandling = StringEscapeHandling.EscapeHtml;
 
-});
-builder.Services.AddCors(options => {
-    options.AddPolicy(name: "AllowOrigin", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000")
-            .AllowAnyHeader()
-            .WithMethods("GET", "POST")
-            .AllowCredentials();
-    });
+    options.UseCamelCasing(true);
 });
 
 var app = builder.Build();
@@ -79,7 +71,12 @@ using (var scope = scopedFactory.CreateScope())
     var service = scope.ServiceProvider.GetService<StreamerSeeder>();
     service.Seed();
 }
-app.UseCors("AllowOrigin");
+
+app.UseCors(builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+);
 
 app.Run();
 
