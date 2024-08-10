@@ -18,6 +18,12 @@ services:
       - streamer_api_server
     env_file:
       - .env
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "100M"
+          pids: 50
 
   streamer_api_server:
     container_name: streamer_api_server
@@ -39,6 +45,12 @@ services:
       - streamer_api_postgres
     env_file:
       - .env
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "300M"
+          pids: 100
 
   streamer_api_postgres:
     container_name: streamer_api_postgres
@@ -53,6 +65,12 @@ services:
       - .env
     volumes:
       - ${POSTGRES_FILES_PATH}:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "200M"
+          pids: 50
 
 networks:
   streamer_api_network:
